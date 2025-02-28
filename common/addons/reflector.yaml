@@ -12,7 +12,7 @@ spec:
     - clusters:
         values:
           addonChart: reflector
-          addonChartNamespace: reflector
+          addonChartNamespace: kube-system
           addonChartVersion: 9.0.313
           addonChartRepository: https://emberstack.github.io/helm-charts
         selector:
