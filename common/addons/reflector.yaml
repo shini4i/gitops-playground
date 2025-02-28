@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: addons-reflector
+spec:
+  goTemplate: true
+  goTemplateOptions: [ "missingkey=error" ]
+  applyNestedSelectors: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - merge:
+        mergeKeys: [server]
+        generators:
+          - clusters:
+              values:
+                addonChart: reflector
+                addonChartNamespace: reflector
+                addonChartVersion: 9.0.313
+                addonChartRepository: https://emberstack.github.io/helm-charts
+              selector:
+                matchExpressions:
+                  - key: argocd.argoproj.io/secret-type
+                    operator: In
+                    values: [cluster]
+                  - key: enable_reflector
+                    operator: In
+                    values: ['true']
+  template:
+    metadata:
+      name: addon-{{.values.addonChart}}
+    spec:
+      project: default
+      sources:
+        - chart: '{{.values.addonChart}}'
+          repoURL: '{{.values.addonChartRepository}}'
+          targetRevision: '{{.values.addonChartVersion}}'
+          helm:
+            releaseName: '{{.values.addonChart}}-controller'
+            valuesObject:
+              fullnameOverride: reflector
+      destination:
+        namespace: '{{.values.addonChartNamespace}}'
+        name: '{{.name}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
