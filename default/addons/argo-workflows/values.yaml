@@ -1,0 +1,5 @@
+fullnameOverride: argo-workflows
+
+workflow:
+  serviceAccount:
+    create: true
