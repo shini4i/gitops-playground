@@ -28,7 +28,6 @@ spec:
       name: addon-{{.values.addonChart}}
       labels:
         managed-by: ApplicationSet
-        chart-name: '{{.values.addonChart}}'
     spec:
       project: default
       sources:
