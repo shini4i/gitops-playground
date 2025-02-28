@@ -40,7 +40,7 @@ spec:
           helm:
             releaseName: '{{.values.addonChart}}'
             ignoreMissingValueFiles: true
-            valuesFiles:
+            valueFiles:
               - '$commonRepo/default/addons/{{.values.addonChart}}/values.yaml'
       destination:
         namespace: '{{.values.addonChartNamespace}}'
