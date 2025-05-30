@@ -13,7 +13,7 @@ spec:
         values:
           addonChart: argo-rollouts
           addonChartNamespace: argo-cd
-          addonChartVersion: argo-rollouts
+          addonChartVersion: 2.39.5
           addonChartRepository: https://argoproj.github.io/argo-helm
         selector:
           matchExpressions:
