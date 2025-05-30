@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: addons-argo-rollouts
+spec:
+  goTemplate: true
+  goTemplateOptions: [ "missingkey=error" ]
+  applyNestedSelectors: true
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  generators:
+    - clusters:
+        values:
+          addonChart: argo-rollouts
+          addonChartNamespace: argo-cd
+          addonChartVersion: argo-rollouts
+          addonChartRepository: https://argoproj.github.io/argo-helm
+        selector:
+          matchExpressions:
+            - key: argocd.argoproj.io/secret-type
+              operator: In
+              values: [cluster]
+            - key: enable_argo_rollouts
+              operator: In
+              values: ['true']
+  template:
+    metadata:
+      name: addon-{{.values.addonChart}}
+      labels:
+        managed-by: ApplicationSet
+    spec:
+      project: default
+      sources:
+        - repoURL: '{{.metadata.annotations.common_repo_url}}'
+          targetRevision: '{{.metadata.annotations.common_repo_revision}}'
+          ref: commonRepo
+        - chart: '{{.values.addonChart}}'
+          repoURL: '{{.values.addonChartRepository}}'
+          targetRevision: '{{.values.addonChartVersion}}'
+          helm:
+            releaseName: '{{.values.addonChart}}'
+            ignoreMissingValueFiles: true
+            valuesObject:
+              fullnameOverride: argo-rollout
+              controller:
+                replicas: 1
+      destination:
+        namespace: '{{.values.addonChartNamespace}}'
+        name: '{{.name}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
