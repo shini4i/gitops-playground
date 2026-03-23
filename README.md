@@ -35,6 +35,7 @@ metadata:
     cluster_name: disposable
     enable_reflector: "true" # enable the reflector controller
     enable_sealed_secrets: "true" # enable the sealed secrets controller
+    enable_postgres_operator: "true" # enable the zalando postgres operator
   name: in-cluster
   namespace: argo-cd
 type: Opaque
