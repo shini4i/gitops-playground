@@ -13,7 +13,7 @@ spec:
         values:
           addonChart: reflector
           addonChartNamespace: kube-system
-          addonChartVersion: 9.0.322
+          addonChartVersion: 10.0.21
           addonChartRepository: https://emberstack.github.io/helm-charts
         selector:
           matchExpressions:
