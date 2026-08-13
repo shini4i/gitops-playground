@@ -13,7 +13,7 @@ spec:
         values:
           addonChart: argo-workflows
           addonChartNamespace: argo-cd
-          addonChartVersion: 1.0.5
+          addonChartVersion: 2.0.0
           addonChartRepository: https://argoproj.github.io/argo-helm
         selector:
           matchExpressions:
