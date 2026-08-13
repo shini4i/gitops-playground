@@ -36,6 +36,8 @@ metadata:
     enable_reflector: "true" # enable the reflector controller
     enable_sealed_secrets: "true" # enable the sealed secrets controller
     enable_postgres_operator: "true" # enable the zalando postgres operator
+    enable_argo_rollouts: "true" # enable the argo rollouts controller
+    enable_argo_workflows: "true" # enable the argo workflows controller
   name: in-cluster
   namespace: argo-cd
 type: Opaque
